@@ -53,6 +53,28 @@ public class Sql2oDepartmentDaoTest {
         assertEquals(departments1, foundDepartment);
     }
 
+    @Test
+    public void deletesDepartmentById(){
+        Departments departments =setUpDepartmentAssistant();
+        departmentDao.add(departments);
+        Departments departments1 = setUpDepartmentAssistant();
+        departmentDao.add(departments1);
+        assertEquals(2, departmentDao.getAll().size());
+        departmentDao.deleteById(departments1.getId());
+        assertEquals(1, departmentDao.getAll().size());
+    }
+
+    @Test
+    public void clearAllDepartments(){
+        Departments departments =setUpDepartmentAssistant();
+        departmentDao.add(departments);
+        Departments departments1 = setUpDepartmentAssistant();
+        departmentDao.add(departments1);
+        assertEquals(2, departmentDao.getAll().size());
+        departmentDao.clearAll();
+        assertEquals(0, departmentDao.getAll().size());
+    }
+
     //helper method
     public Departments setUpDepartmentAssistant(){
         return new Departments("Human resource", "the personnel of a business or organization, regarded as a significant asset in terms of skills and abilities.\n");

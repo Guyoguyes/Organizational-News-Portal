@@ -45,4 +45,35 @@ public class Sql2oEmployeesDao implements EmployeesDao{
         }
     }
 
+    @Override
+    public List<Employees> getAllEmployeesInDepartment(int departmentId) {
+        try(Connection connection = sql2o.open()){
+            return connection.createQuery("SELECT * FROM employees WHERE departmentId=:departmentId")
+                    .addParameter("departmentId", departmentId)
+                    .executeAndFetch(Employees.class);
+        }
+    }
+
+    @Override
+    public void deleteById(int id) {
+        String sql = "DELETE FROM employees WHERE id=:id";
+        try(Connection connection = sql2o.open()){
+            connection.createQuery(sql)
+                    .addParameter("id", id)
+                    .executeUpdate();
+        }catch (Sql2oException e){
+            System.out.println(e);
+        }
+    }
+
+    @Override
+    public void clearAll() {
+        String sql = "DELETE FROM employees";
+        try(Connection connection = sql2o.open()){
+            connection.createQuery(sql)
+                    .executeUpdate();
+        }catch (Sql2oException e){
+            System.out.println(e);
+        }
+    }
 }

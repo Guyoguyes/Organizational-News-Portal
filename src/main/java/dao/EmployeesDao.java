@@ -14,4 +14,14 @@ public interface EmployeesDao {
 
     // find By Id
     Employees findById(int id);
+
+    //get All Employees in a department
+    List<Employees> getAllEmployeesInDepartment(int departmentId);
+
+    //delete by id
+    void deleteById(int id);
+
+    //clear All
+    void clearAll();
+
 }

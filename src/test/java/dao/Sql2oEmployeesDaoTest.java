@@ -1,5 +1,6 @@
 package dao;
 
+import models.Departments;
 import models.Employees;
 import org.junit.After;
 import org.junit.Before;
@@ -49,6 +50,36 @@ public class Sql2oEmployeesDaoTest {
         assertEquals(employees1, foundEmployees);
     }
 
+    @Test
+    public void getsAllEmployeesInDepartment(){
+        Departments departments = new Departments("ICT", "information communication Technology");
+        departmentDao.add(departments);
+        Employees employees = setUpAltAssistant(departments);
+        employeesDao.add(employees);
+        assertEquals(1, employeesDao.getAllEmployeesInDepartment(departments.getId()).size());
+    }
+
+    @Test
+    public void deletesById(){
+        Employees employees = setUpAssistant();
+        employeesDao.add(employees);
+        Employees employees1 = setUpAssistant();
+        employeesDao.add(employees1);
+        assertEquals(2, employeesDao.getAll().size());
+        employeesDao.deleteById(employees.getId());
+        assertEquals(1, employeesDao.getAll().size());
+    }
+
+    @Test
+    public void clearAll(){
+        Employees employees = setUpAssistant();
+        employeesDao.add(employees);
+        Employees employees1 = setUpAssistant();
+        employeesDao.add(employees1);
+        employeesDao.clearAll();
+        assertEquals(0, employeesDao.getAll().size());
+    }
+
     @After
     public void tearDown() throws Exception {
         connection.close();
@@ -58,4 +89,9 @@ public class Sql2oEmployeesDaoTest {
     public Employees setUpAssistant(){
         return new Employees("John Doe", "Ict director", "supervise IT", 1);
     }
+
+    public Employees setUpAltAssistant(Departments departments){
+            return new Employees("John Doe", "Ict director", "supervise IT", departments.getId());
+    }
+
 }

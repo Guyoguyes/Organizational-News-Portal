@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS employees (
     name VARCHAR,
     position VARCHAR,
     role VARCHAR,
-    departmentId VARCHAR
+    departmentId INTEGER
 );
 
 CREATE TABLE IF NOT EXISTS news (

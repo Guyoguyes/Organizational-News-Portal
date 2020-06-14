@@ -34,7 +34,7 @@ public class Sql2oNewsDaoTest {
     public void addsNewsToDatabase(){
         Departments departments = setUpDepartmentAssistant();
         departmentDao.add(departments);
-        News news = setUpAltAssistant();
+        News news = setUpAltAssistant(departments);
         newsDao.add(news);
         assertEquals(1, newsDao.getAll().size());
     }
@@ -58,13 +58,48 @@ public class Sql2oNewsDaoTest {
         assertEquals(news1, foundNews);
     }
 
+    @Test
+    public void getsAllDepartmentInTheNews(){
+        Departments departments = setUpDepartmentAssistant();
+        departmentDao.add(departments);
+        Departments departments1 = setUpDepartmentAssistant();
+        departmentDao.add(departments1);
+        News news = setUpAltAssistant(departments);
+        newsDao.add(news);
+        News news1 = setUpAltAssistant(departments1);
+        newsDao.add(news1);
+
+        assertEquals(1, newsDao.getAllNewsByDepartment(departments.getId()).size());
+    }
+
+    @Test
+    public void deleteById(){
+        News news = setUpAssistance();
+        newsDao.add(news);
+        News news1 = setUpAssistance();
+        newsDao.add(news1);
+        assertEquals(2, newsDao.getAll().size());
+        newsDao.deleteById(news1.getId());
+        assertEquals(1, newsDao.getAll().size());
+    }
+
+    @Test
+    public void clearAll(){
+        News news = setUpAssistance();
+        newsDao.add(news);
+        News news1 = setUpAssistance();
+        newsDao.add(news1);
+        newsDao.clearAll();
+        assertEquals(0, newsDao.getAll().size());
+    }
+
     //helper method
     public News setUpAssistance(){
         return new News("Voice of The Black", "Black live matter demonstration", "James Bond");
     }
 
-    public News setUpAltAssistant(){
-        return  new News("Voice of The Black", "Black live matter demonstration", "James Bond", 1);
+    public News setUpAltAssistant(Departments departments){
+        return  new News("Voice of The Black", "Black live matter demonstration", "James Bond", departments.getId());
     }
 
     public Departments setUpDepartmentAssistant(){

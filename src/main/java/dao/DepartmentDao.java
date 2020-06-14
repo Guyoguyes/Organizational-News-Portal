@@ -15,4 +15,10 @@ public interface DepartmentDao {
     //Find by id
     Departments findById(int id);
 
+    //delete by id
+    void deleteById(int id);
+
+    //clear all
+    void clearAll();
+
 }
