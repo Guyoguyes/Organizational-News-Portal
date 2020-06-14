@@ -43,14 +43,15 @@ public class Sql2oDepartmentDaoTest {
         assertEquals(2, departmentDao.getAll().size());
     }
 
-//    @Test
-//    public void findsSpecificDepartmentById(){
-//        Departments departments = setUpDepartmentAssistant();
-//        departmentDao.add(departments);
-//        Departments departments1 = setUpDepartmentAssistant();
-//        departmentDao.add(departments);
-//        assertEquals(departments, departmentDao.findById(departments.getId()));
-//    }
+    @Test
+    public void findsSpecificDepartmentById(){
+        Departments departments = setUpDepartmentAssistant();
+        departmentDao.add(departments);
+        Departments departments1 = setUpDepartmentAssistant();
+        departmentDao.add(departments1);
+        Departments foundDepartment = departmentDao.findById(departments1.getId());
+        assertEquals(departments1, foundDepartment);
+    }
 
     //helper method
     public Departments setUpDepartmentAssistant(){

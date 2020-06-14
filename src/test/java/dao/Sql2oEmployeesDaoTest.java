@@ -30,6 +30,25 @@ public class Sql2oEmployeesDaoTest {
         assertEquals(1, employeesDao.getAll().size());
     }
 
+    @Test
+    public void getsAllEmployeesFromDatabase(){
+        Employees employees = setUpAssistant();
+        employeesDao.add(employees);
+        Employees employees1 = setUpAssistant();
+        employeesDao.add(employees1);
+        assertEquals(2, employeesDao.getAll().size());
+    }
+
+    @Test
+    public void findsSpecificEmployeesById(){
+        Employees employees = setUpAssistant();
+        employeesDao.add(employees);
+        Employees employees1 = setUpAssistant();
+        employeesDao.add(employees1);
+        Employees foundEmployees = employeesDao.findById(employees1.getId());
+        assertEquals(employees1, foundEmployees);
+    }
+
     @After
     public void tearDown() throws Exception {
         connection.close();
