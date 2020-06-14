@@ -19,5 +19,5 @@ CREATE TABLE IF NOT EXISTS news (
     headline VARCHAR,
     content VARCHAR ,
     author VARCHAR ,
-    departmentId int
+    departmentId INTEGER
 )
