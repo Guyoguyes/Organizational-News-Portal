@@ -34,6 +34,24 @@ public class Sql2oDepartmentDaoTest {
         assertEquals(1, departmentDao.getAll().size());
     }
 
+    @Test
+    public void getsAllDepartmentFromDatabase(){
+        Departments departments = setUpDepartmentAssistant();
+        departmentDao.add(departments);
+        Departments departments1 = setUpDepartmentAssistant();
+        departmentDao.add(departments);
+        assertEquals(2, departmentDao.getAll().size());
+    }
+
+//    @Test
+//    public void findsSpecificDepartmentById(){
+//        Departments departments = setUpDepartmentAssistant();
+//        departmentDao.add(departments);
+//        Departments departments1 = setUpDepartmentAssistant();
+//        departmentDao.add(departments);
+//        assertEquals(departments, departmentDao.findById(departments.getId()));
+//    }
+
     //helper method
     public Departments setUpDepartmentAssistant(){
         return new Departments("Human resource", "the personnel of a business or organization, regarded as a significant asset in terms of skills and abilities.\n");
