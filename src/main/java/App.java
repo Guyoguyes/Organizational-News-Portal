@@ -2,8 +2,14 @@ import com.google.gson.Gson;
 import dao.Sql2oDepartmentDao;
 import dao.Sql2oEmployeesDao;
 import dao.Sql2oNewsDao;
+import models.Departments;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static spark.Spark.*;
 
 public class App {
     public static void main(String[] args) {
@@ -21,5 +27,34 @@ public class App {
         newsDao = new Sql2oNewsDao(sql2o);
 
         connection = sql2o.open();
+
+        //post a department
+        post("/department/new", "application/json", (req, res) ->{
+            Departments departments = gson.fromJson(req.body(), Departments.class);
+            departmentDao.add(departments);
+            res.status(201);
+            return gson.toJson(departments);
+        });
+
+        //get departments
+        get("/department", "application/json", (req, res) ->{
+            return gson.toJson(departmentDao.getAll());
+        });
+
+        //Filters
+        exception(ApiException.class, (exception, req, res) -> {
+            ApiException err = exception;
+            Map<String, Object> jsonMap = new HashMap<>();
+            jsonMap.put("status", err.getStatusCode());
+            jsonMap.put("errorMessage", err.getMessage());
+            res.type("application/json");
+            res.status(err.getStatusCode());
+            res.body(gson.toJson(jsonMap));
+        });
+
+
+        after((req, res) ->{
+            res.type("application/json");
+        });
     }
 }
