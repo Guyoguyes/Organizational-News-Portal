@@ -2,6 +2,7 @@ import com.google.gson.Gson;
 import dao.Sql2oDepartmentDao;
 import dao.Sql2oEmployeesDao;
 import dao.Sql2oNewsDao;
+import exceptions.ApiException;
 import models.Departments;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
@@ -39,6 +40,18 @@ public class App {
         //get departments
         get("/department", "application/json", (req, res) ->{
             return gson.toJson(departmentDao.getAll());
+        });
+
+        //get by id
+        get("/department/:id", "application/json", (req, res) ->{
+            int departmentId = Integer.parseInt(req.queryParams("id"));
+            Departments departments = departmentDao.findById(departmentId);
+
+            if(departments == null){
+                throw new ApiException(404, String.format("No restaurant with the id: \"%s\" exists", req.params("id")));
+
+            }
+            return gson.toJson(departments);
         });
 
         //Filters
