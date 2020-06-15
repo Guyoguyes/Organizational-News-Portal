@@ -4,6 +4,7 @@ import dao.Sql2oEmployeesDao;
 import dao.Sql2oNewsDao;
 import exceptions.ApiException;
 import models.Departments;
+import models.News;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 
@@ -52,6 +53,38 @@ public class App {
 
             }
             return gson.toJson(departments);
+        });
+
+        post("/department/:departmentId/news/new", "application/json", (req, res) ->{
+            int departmentId = Integer.parseInt(req.queryParams("departmentId"));
+            News news = gson.fromJson(req.body(), News.class);
+            news.setDepartmentId(departmentId);
+
+            newsDao.add(news);
+            res.status(201);
+            return gson.toJson(news);
+        });
+
+        //post normal news
+        post("/news/new", "application/json", (req, res) ->{
+            News news = gson.fromJson(req.body(), News.class);
+            newsDao.add(news);
+            return gson.toJson(news);
+        });
+
+        get("/news", "application/json", (req, res) ->{
+            return gson.toJson(newsDao.getAll());
+        });
+
+        get("/news/:id", "application/json", (req, res) ->{
+            int newsId = Integer.parseInt(req.queryParams("id"));
+            News news = newsDao.findById(newsId);
+
+            if(news == null){
+                throw new ApiException(404, String.format("No restaurant with the id: \"%s\" exists", req.params("id")));
+
+            }
+            return gson.toJson(news);
         });
 
         //Filters
